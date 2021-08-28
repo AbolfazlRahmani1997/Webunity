@@ -45,8 +45,8 @@
                                 <div class="form-group row">
                                     <div class="col-12">
                                         <div class="form-material floating">
-                                            <input type="text" class="form-control" id="signup-username" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                                             <label for="signup-username">{{ __('Name') }}</label>
+                                            <input type="text" class="form-control" id="signup-username" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                         </div>
                                         @error('name')

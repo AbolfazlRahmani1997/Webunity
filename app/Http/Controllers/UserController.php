@@ -17,6 +17,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
+dd($roles = Role::pluck('name','name')->all());
+
         if ($request->ajax()) {
             $data = User::with('roles')->get();
             return Datatables::of($data)
@@ -78,6 +80,11 @@ class UserController extends Controller
        $User=$User->findData($id);
        return Role::all();
     }
+
+//    public function setavatar(Request $request)
+//    {
+//        re
+//    }
 
     /**
      * Show the form for editing the specified resource.

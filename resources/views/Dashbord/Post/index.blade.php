@@ -26,7 +26,7 @@
                         </div>
                     </div>
                     <div class="block-content">
-                        <h2>دسته بندی ها</h2>
+                        <h2>بلاگ</h2>
                         <button class="btn-success btn my-5 mx-5" id="getAddtArticleData" onclick="">افزودن</button>
                         <table class="table yajra-dt" id="Category_Table">
                             <thead>
@@ -292,12 +292,13 @@
                    {
                        data: (data)=>{
 
-                           let data1=data.images[0].path;
-                           if (data1===null)
+                           let data1=data.images.path;
+                           console.log(data)
+                           if (data.images==null)
                            {
-                               return "<img width='100px' src=''>"
+                               return "<img width='100px' src='/images/defualt.jpg'>"
                            }else{
-                               return "<img width='100px' src='/"+data1+"'>"
+                               return "<img width='100px'height='100px' src='"+data1+"'>"
                            }
 
                        },
@@ -382,7 +383,8 @@
            var id;
 
            $('body').on('click', '#getEditArticleData', function(e) {
-           e.preventDefault();
+
+               e.preventDefault();
            $('.alert-danger').html('');
            $('.alert-danger').hide();
 
@@ -521,6 +523,7 @@
            var deleteID;
            $('body').on('click', '#getDeleteId', function(){
            deleteID = $(this).data('id');
+
        })
            $('#SubmitDeleteArticleForm').click(function(e) {
            e.preventDefault();
@@ -531,13 +534,14 @@
        }
        });
            $.ajax({
-           url: "category/"+id,
+           url: "/post/"+id,
            method: 'DELETE',
                data:{
                    _token: '{{csrf_token()}}',
                }
                ,
            success: function(result) {
+               alert(result)
            setInterval(function(){
            $('#Category_Table').DataTable().ajax.reload();
            $('#DeleteArticleModal').hide();

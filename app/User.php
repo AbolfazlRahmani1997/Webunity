@@ -45,7 +45,11 @@ class User extends Authenticatable
     {
         return static::orderBy('created_at','desc')->get();
     }
+    public function avatar()
+    {
+        return $this->morphOne(image::class,'imageable');
 
+    }
     public function storeData($input)
     {
         return static::create($input);

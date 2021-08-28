@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\image;
 use App\Post;
+//use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,8 +22,6 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-
-
 
 
 
@@ -61,7 +62,6 @@ class PostController extends Controller
     {
 
 
-        Storage::put('file1.txt', $request);
 
         $validator = \Validator::make($request->all(), [
             'title' => 'required',
@@ -73,11 +73,16 @@ class PostController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
+
         $imageName = time().'.'.$request->file('image')->extension();
-        $imagePath=$request->file('image')->storeAs('images', $imageName, 'public');
+        $imagePath="/images/".$imageName;
+        $imagePath1= $request->file('image')->move(public_path('images'), $imageName);
+//        Storage::put('file1.txt', $imagePath1);
         $image=new image;
         $image->name=$imageName;
         $image->path=$imagePath;
+        $request->merge(['user_id' => Auth::user()->id]);
+
        $post= $post->storeData($request->all());
         $post->images()->save($image);
 
@@ -114,11 +119,13 @@ class PostController extends Controller
                 </div>
                 <div class="form-group" style="text-align: right;direction: rtl;">
                     <label for="name">متن:</label>
-                    <textarea class="description"  name="body" id="editbody" value="'.$data->body.'"></textarea>
+                    <textarea class="description"  name="body" id="editbody" value="">'.$data->body.'</textarea>
 
                 </div>
+
   <div class="form-group" style="text-align: right;direction: rtl;">
                     <label for="name">عکس:</label>
+                    <img width="100px"height="100px"  src="'.$data->images->path.'" alt="">
                     <input class="form-control"type="file"  name="image" id="editimage" multiple/>
                 </div>
 
@@ -146,8 +153,10 @@ class PostController extends Controller
      * @param  \App\post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(post $post)
+    public function destroy($id)
     {
-        //
+
+        $post=new Post;
+        $post->deleteData($id);
     }
 }

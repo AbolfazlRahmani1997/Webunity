@@ -2,12 +2,13 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
 
-    protected $fillable=['title','body','user_id','category_id'];
+    protected $fillable=['id','title','body','user_id','category_id'];
 
 
     public function user()
@@ -22,7 +23,7 @@ public function category()
 
     public function images()
     {
-        return $this->morphMany(image::class,'imageable');
+        return $this->morphOne(image::class,'imageable');
 
 }
 public function getData()
@@ -48,6 +49,13 @@ public function getData()
 
     public function deleteData($id)
     {
-        return static::find($id)->delete();
+        $post=static::find($id);
+        $imagePath="images/{$post->images->name}";
+     if (File::exists($imagePath)){
+         unlink(public_path($imagePath));
+     }
+
+        $post->images()->delete();
+        return $post->delete();
     }
 }

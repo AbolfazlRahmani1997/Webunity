@@ -36,7 +36,6 @@ class CategoryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
                     $btn = '<button type="button" class="btn btn-success btn-sm" id="getEditArticleData" data-id="'.$data->id.'">Edit</button>
-
                     <button type="button" data-id="'.$data->id.'" data-toggle="modal" data-target="#DeleteArticleModal" class="btn btn-danger btn-sm" id="getDeleteId">Delete</button>
                     <button type="button" data-id="'.$data->id.'" data-toggle="modal" data-target="#ChengRoleModal" class="btn btn-info btn-sm" id="getRoleId">Role</button>';
                     return $btn;

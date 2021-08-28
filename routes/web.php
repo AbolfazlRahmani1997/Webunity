@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -21,6 +22,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::resource('category','CategoryController');
+Route::resource('userm','UserMangerController');
 
 
 
